@@ -1,8 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
 
+  const API_URL =
+    "https://privacy-scout-api.greenkitchenfindz.workers.dev";
+
   const phoneInput = document.getElementById("phone");
   const scanButton = document.getElementById("scanButton");
   const cleanupButton = document.getElementById("cleanupButton");
+  const backendButton = document.getElementById("backendButton");
 
   const status = document.getElementById("status");
   const foundCount = document.getElementById("foundCount");
@@ -10,11 +14,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const safeCount = document.getElementById("safeCount");
   const results = document.getElementById("results");
   const cleanupResults = document.getElementById("cleanupResults");
+  const backendStatus = document.getElementById("backendStatus");
 
   let lastScannedPhone = "";
 
   scanButton.addEventListener("click", runScan);
   cleanupButton.addEventListener("click", createCleanupPlan);
+  backendButton.addEventListener("click", testBackend);
 
   function runScan() {
 
@@ -64,15 +70,9 @@ document.addEventListener("DOMContentLoaded", () => {
           <strong>External data sent:</strong>
           None
         </p>
-
-        <p>
-          <strong>Next step:</strong>
-          You can create a local Privacy Cleanup plan below.
-        </p>
       `;
 
       status.textContent = "✅ Scan complete.";
-
       scanButton.disabled = false;
 
     }, 1000);
@@ -81,6 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function createCleanupPlan() {
 
     if (!lastScannedPhone) {
+
       cleanupResults.innerHTML = `
         <div class="cleanup-item">
           <h3>📱 Scan Required</h3>
@@ -102,79 +103,99 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <div class="cleanup-item">
           <h3>📱 Phone Number Exposure</h3>
-
           <p>
             Your phone number is the information you asked Privacy Scout
             to protect.
           </p>
-
           <span class="cleanup-status">
-            🟡 Removal check not performed
+            🟡 Online check not performed
           </span>
         </div>
 
         <div class="cleanup-item">
           <h3>🌐 Data Broker Listings</h3>
-
           <p>
             Some people-search and data-broker websites may publish
             phone numbers.
           </p>
-
-          <p>
-            Privacy Scout has not contacted any of these services.
-          </p>
-
           <span class="cleanup-status">
-            🟡 Needs online lookup
+            🟡 Online check not performed
           </span>
         </div>
 
         <div class="cleanup-item">
-          <h3>🔎 Search Engine Results</h3>
-
+          <h3>🔎 Search Results</h3>
           <p>
-            Your phone number could potentially appear in search results,
-            websites, directories, or old posts.
+            Public websites, directories, or old posts could potentially
+            expose your information.
           </p>
-
-          <p>
-            No search was performed in this local-only version.
-          </p>
-
           <span class="cleanup-status">
-            🟡 Needs online lookup
+            🟡 Online check not performed
           </span>
         </div>
 
         <div class="cleanup-item">
           <h3>🧹 Removal Requests</h3>
-
           <p>
-            Privacy Scout can eventually help prepare removal requests
-            for services where your information is found.
+            Removal requests will only be prepared or submitted after
+            you approve them.
           </p>
-
-          <p>
-            Nothing will be submitted without your approval.
-          </p>
-
           <span class="cleanup-status">
-            🔒 Waiting for your approval
+            🔒 Waiting for approval
           </span>
         </div>
 
-        <div class="privacy-warning">
-          🔐 <strong>Privacy protection:</strong>
-          This cleanup plan was created locally. Your phone number
-          was not sent to a website, search engine, or third-party service.
-        </div>
       `;
 
       cleanupButton.textContent = "🧹 Cleanup Plan Created";
       cleanupButton.disabled = false;
 
     }, 700);
+  }
+
+  async function testBackend() {
+
+    backendButton.disabled = true;
+    backendStatus.textContent = "🔄 Connecting to Privacy Scout backend...";
+
+    try {
+
+      const response = await fetch(API_URL + "/test", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          test: true
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error("Backend returned an error.");
+      }
+
+      const data = await response.json();
+
+      if (data.success) {
+
+        backendStatus.textContent =
+          "🟢 Backend connected successfully. No personal information was sent.";
+
+      } else {
+
+        backendStatus.textContent =
+          "⚠️ Backend responded, but the test was not successful.";
+
+      }
+
+    } catch (error) {
+
+      backendStatus.textContent =
+        "🔴 Could not connect to the backend. Check the Worker and try again.";
+
+    }
+
+    backendButton.disabled = false;
   }
 
 });
