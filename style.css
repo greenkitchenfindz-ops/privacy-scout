@@ -176,11 +176,6 @@ button:disabled {
   font-size: 13px;
 }
 
-.cleanup-complete {
-  background: #183b28;
-  color: #8ee6a8;
-}
-
 .privacy-warning {
   margin: 15px 0;
   padding: 14px;
@@ -196,6 +191,10 @@ button:disabled {
   background: #0d1426;
   border-radius: 10px;
   color: #8ee6a8;
+}
+
+.backend-card {
+  border: 1px solid #394b72;
 }
 
 @media (max-width: 500px) {
