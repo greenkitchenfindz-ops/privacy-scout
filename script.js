@@ -11,22 +11,12 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("approveSearchButton");
 
   const status = document.getElementById("status");
-
-  const foundCount =
-    document.getElementById("foundCount");
-
-  const riskCount =
-    document.getElementById("riskCount");
-
-  const safeCount =
-    document.getElementById("safeCount");
-
-  const results =
-    document.getElementById("results");
-
+  const foundCount = document.getElementById("foundCount");
+  const riskCount = document.getElementById("riskCount");
+  const safeCount = document.getElementById("safeCount");
+  const results = document.getElementById("results");
   const cleanupResults =
     document.getElementById("cleanupResults");
-
   const backendStatus =
     document.getElementById("backendStatus");
 
@@ -42,40 +32,26 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let lastScannedPhone = "";
 
-  let onlineSearchApproved = false;
 
+  // -----------------------------
+  // LOCAL PHONE SCAN
+  // -----------------------------
 
-  scanButton.addEventListener("click", runScan);
-
-  cleanupButton.addEventListener(
-    "click",
-    createCleanupPlan
-  );
-
-  backendButton.addEventListener(
-    "click",
-    testBackend
-  );
-
-  approveSearchButton.addEventListener(
-    "click",
-    approveOnlineSearch
-  );
-
-
-  /*
-   * LOCAL PHONE SCAN
-   */
-
-  function runScan() {
+  scanButton.addEventListener("click", () => {
 
     const phone = phoneInput.value.trim();
 
     if (!phone) {
-
       status.textContent =
         "Please enter a phone number first.";
+      return;
+    }
 
+    const digits = phone.replace(/\D/g, "");
+
+    if (digits.length < 7) {
+      status.textContent =
+        "Please enter a valid phone number.";
       return;
     }
 
@@ -86,25 +62,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     setTimeout(() => {
 
-      const digits =
-        phone.replace(/\D/g, "");
-
-      if (digits.length < 7) {
-
-        status.textContent =
-          "Please enter a valid phone number.";
-
-        scanButton.disabled = false;
-
-        return;
-      }
-
       lastScannedPhone = phone;
 
       foundCount.textContent = "1";
       riskCount.textContent = "0";
       safeCount.textContent = "1";
-
 
       results.innerHTML = `
         <strong>🛡️ Scan Complete</strong>
@@ -128,14 +90,11 @@ document.addEventListener("DOMContentLoaded", () => {
         </p>
       `;
 
-
       approvalData.textContent =
         "Phone number entered";
 
-
       approvalStatus.textContent =
         "🔒 Waiting for your approval.";
-
 
       exposureResults.innerHTML = `
         <p>
@@ -143,34 +102,25 @@ document.addEventListener("DOMContentLoaded", () => {
         </p>
       `;
 
-
-      onlineSearchApproved = false;
-
       approveSearchButton.disabled = false;
 
       approveSearchButton.textContent =
         "🔐 Approve Online Search";
-
 
       status.textContent =
         "✅ Scan complete.";
 
       scanButton.disabled = false;
 
-    }, 1000);
-  }
+    }, 800);
+  });
 
 
-  /*
-   * EXPOSURE FINDER APPROVAL
-   *
-   * IMPORTANT:
-   * This function does NOT send the phone number.
-   *
-   * It only demonstrates the approval gate.
-   */
+  // -----------------------------
+  // EXPOSURE FINDER APPROVAL
+  // -----------------------------
 
-  function approveOnlineSearch() {
+  approveSearchButton.addEventListener("click", () => {
 
     if (!lastScannedPhone) {
 
@@ -181,7 +131,9 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
-    onlineSearchApproved = true;
+    // IMPORTANT:
+    // Nothing is sent to the internet here.
+    // This is ONLY the permission demonstration.
 
     approveSearchButton.disabled = true;
 
@@ -190,7 +142,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     approvalStatus.textContent =
-      "🟢 You approved the online search. No search has been performed yet.";
+      "🟢 Permission granted. No search has been performed yet.";
 
 
     exposureResults.innerHTML = `
@@ -200,13 +152,12 @@ document.addEventListener("DOMContentLoaded", () => {
         <h3>🟢 Permission Granted</h3>
 
         <p>
-          You approved Privacy Scout to perform an online exposure search.
+          You approved Privacy Scout to perform an online
+          exposure search.
         </p>
 
         <p>
-          <strong>Important:</strong>
-          This version has not connected the approved search to a real
-          search provider yet.
+          <strong>No personal information was sent.</strong>
         </p>
 
         <span class="cleanup-status">
@@ -217,11 +168,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
       <div class="cleanup-item">
 
-        <h3>🔐 What happens next?</h3>
+        <h3>🔐 Your Information</h3>
 
         <p>
-          The next version will send only the information you approved,
-          through the Privacy Scout backend.
+          The phone number remains inside this browser.
+        </p>
+
+        <p>
+          The next step will connect this approval to the
+          Privacy Scout backend.
         </p>
 
         <span class="cleanup-status">
@@ -231,14 +186,14 @@ document.addEventListener("DOMContentLoaded", () => {
       </div>
 
     `;
-  }
+  });
 
 
-  /*
-   * CLEANUP PLAN
-   */
+  // -----------------------------
+  // CLEANUP PLAN
+  // -----------------------------
 
-  function createCleanupPlan() {
+  cleanupButton.addEventListener("click", () => {
 
     if (!lastScannedPhone) {
 
@@ -248,7 +203,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <h3>📱 Scan Required</h3>
 
           <p>
-            Enter a phone number and run the Privacy Scout scan first.
+            Enter a phone number and run the Privacy Scout
+            scan first.
           </p>
 
         </div>
@@ -321,8 +277,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <h3>🧹 Removal Requests</h3>
 
           <p>
-            Removal requests will only be prepared or submitted
-            after you approve them.
+            Removal requests will only be prepared or
+            submitted after you approve them.
           </p>
 
           <span class="cleanup-status">
@@ -340,14 +296,14 @@ document.addEventListener("DOMContentLoaded", () => {
       cleanupButton.disabled = false;
 
     }, 700);
-  }
+  });
 
 
-  /*
-   * BACKEND CONNECTION TEST
-   */
+  // -----------------------------
+  // BACKEND TEST
+  // -----------------------------
 
-  async function testBackend() {
+  backendButton.addEventListener("click", async () => {
 
     backendButton.disabled = true;
 
@@ -374,16 +330,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
       if (!response.ok) {
-
-        throw new Error(
-          "Backend returned an error."
-        );
-
+        throw new Error("Backend error");
       }
 
 
-      const data =
-        await response.json();
+      const data = await response.json();
 
 
       if (data.success) {
@@ -407,6 +358,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     backendButton.disabled = false;
-  }
+
+  });
 
 });
