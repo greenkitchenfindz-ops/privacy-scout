@@ -17,9 +17,12 @@
       <p>Find privacy risks and take control of your information.</p>
 
       <div class="privacy-badge">
-        🔒 Local Scan Mode
+        🔒 Privacy-First Mode
       </div>
     </header>
+
+
+    <!-- LOCAL SCANNER -->
 
     <section class="card">
       <h2>🔎 Scan Your Information</h2>
@@ -43,6 +46,9 @@
         Privacy Scout is ready.
       </p>
     </section>
+
+
+    <!-- PRIVACY STATUS -->
 
     <section class="card">
       <h2>📊 Privacy Status</h2>
@@ -71,6 +77,73 @@
       </div>
     </section>
 
+
+    <!-- EXPOSURE FINDER -->
+
+    <section class="card exposure-card">
+
+      <h2>🌐 Exposure Finder</h2>
+
+      <p class="description">
+        Check whether information may be publicly exposed online.
+      </p>
+
+      <div class="exposure-warning">
+        🔐 <strong>Nothing leaves your device without your approval.</strong>
+      </div>
+
+      <div class="approval-box">
+
+        <h3>Before we search online</h3>
+
+        <p>
+          Privacy Scout will need permission before sending information
+          to an online search service.
+        </p>
+
+        <div class="data-row">
+          <span>📱 Information</span>
+          <strong id="approvalData">Phone number</strong>
+        </div>
+
+        <div class="data-row">
+          <span>☁️ Destination</span>
+          <strong>Privacy Scout search service</strong>
+        </div>
+
+        <div class="data-row">
+          <span>🎯 Purpose</span>
+          <strong>Find public exposure</strong>
+        </div>
+
+        <div class="data-row">
+          <span>🤖 AI access</span>
+          <strong>Not used yet</strong>
+        </div>
+
+        <button id="approveSearchButton" class="approve-button">
+          🔐 Approve Online Search
+        </button>
+
+        <p id="approvalStatus" class="approval-status">
+          🔒 Waiting for your approval.
+        </p>
+
+      </div>
+
+      <div id="exposureResults" class="exposure-results">
+
+        <p>
+          No online search has been performed.
+        </p>
+
+      </div>
+
+    </section>
+
+
+    <!-- CLEANUP -->
+
     <section class="card cleanup-card">
 
       <h2>🧹 Privacy Cleanup</h2>
@@ -95,12 +168,15 @@
 
     </section>
 
+
+    <!-- BACKEND -->
+
     <section class="card backend-card">
 
       <h2>☁️ Privacy Scout Backend</h2>
 
       <p class="description">
-        This backend will eventually power secure online exposure checks.
+        This secure backend will power Privacy Scout's online features.
       </p>
 
       <button id="backendButton">
@@ -113,17 +189,20 @@
 
     </section>
 
+
+    <!-- PRIVACY -->
+
     <section class="card privacy-card">
 
       <h2>🔐 Your Privacy</h2>
 
       <p>
         Your phone number is currently processed locally.
-        The Exposure Finder has not been activated yet.
+        Online Exposure Finder searches require your approval.
       </p>
 
       <div class="connection-status">
-        🟢 Phone number is not sent during the local scan
+        🟢 Nothing is sent automatically
       </div>
 
     </section>
