@@ -14,13 +14,14 @@
     <header class="hero">
       <div class="logo">🛡️</div>
       <h1>Privacy Scout</h1>
-      <p>Check your information and understand your privacy exposure.</p>
+      <p>Find privacy risks and take control of your information.</p>
 
       <div class="privacy-badge">
         🔒 Local Scan Mode
       </div>
     </header>
 
+    <!-- PHONE SCANNER -->
     <section class="card">
       <h2>🔎 Scan Your Information</h2>
 
@@ -44,6 +45,7 @@
       </p>
     </section>
 
+    <!-- PRIVACY STATUS -->
     <section class="card">
       <h2>📊 Privacy Status</h2>
 
@@ -71,7 +73,36 @@
       </div>
     </section>
 
+    <!-- PRIVACY CLEANUP -->
+    <section class="card cleanup-card">
+
+      <h2>🧹 Privacy Cleanup</h2>
+
+      <p class="description">
+        Privacy Scout can create a cleanup checklist for information
+        you may want removed from places you don't want it.
+      </p>
+
+      <div class="privacy-warning">
+        🔐 <strong>Nothing is sent automatically.</strong>
+        This version only creates a local cleanup plan.
+      </div>
+
+      <button id="cleanupButton" class="cleanup-button">
+        🧹 Create My Cleanup Plan
+      </button>
+
+      <div id="cleanupResults" class="cleanup-results">
+        <p>
+          Run your phone scan first, then create a cleanup plan.
+        </p>
+      </div>
+
+    </section>
+
+    <!-- PRIVACY PROMISE -->
     <section class="card privacy-card">
+
       <h2>🔐 Your Privacy</h2>
 
       <p>
@@ -82,6 +113,7 @@
       <div class="connection-status">
         🟢 No external connection required
       </div>
+
     </section>
 
   </main>
