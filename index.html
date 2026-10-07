@@ -21,7 +21,6 @@
       </div>
     </header>
 
-    <!-- PHONE SCANNER -->
     <section class="card">
       <h2>🔎 Scan Your Information</h2>
 
@@ -45,7 +44,6 @@
       </p>
     </section>
 
-    <!-- PRIVACY STATUS -->
     <section class="card">
       <h2>📊 Privacy Status</h2>
 
@@ -73,19 +71,16 @@
       </div>
     </section>
 
-    <!-- PRIVACY CLEANUP -->
     <section class="card cleanup-card">
 
       <h2>🧹 Privacy Cleanup</h2>
 
       <p class="description">
-        Privacy Scout can create a cleanup checklist for information
-        you may want removed from places you don't want it.
+        Create a local cleanup plan for information you may want removed.
       </p>
 
       <div class="privacy-warning">
         🔐 <strong>Nothing is sent automatically.</strong>
-        This version only creates a local cleanup plan.
       </div>
 
       <button id="cleanupButton" class="cleanup-button">
@@ -100,18 +95,35 @@
 
     </section>
 
-    <!-- PRIVACY PROMISE -->
+    <section class="card backend-card">
+
+      <h2>☁️ Privacy Scout Backend</h2>
+
+      <p class="description">
+        This backend will eventually power secure online exposure checks.
+      </p>
+
+      <button id="backendButton">
+        🔗 Test Backend Connection
+      </button>
+
+      <p id="backendStatus" class="status-message">
+        Backend connection has not been tested.
+      </p>
+
+    </section>
+
     <section class="card privacy-card">
 
       <h2>🔐 Your Privacy</h2>
 
       <p>
-        This version performs its scan directly in your browser.
-        Your information is not sent to an outside service.
+        Your phone number is currently processed locally.
+        The Exposure Finder has not been activated yet.
       </p>
 
       <div class="connection-status">
-        🟢 No external connection required
+        🟢 Phone number is not sent during the local scan
       </div>
 
     </section>
