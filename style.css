@@ -4,116 +4,143 @@
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background: #0b0f14;
-  color: white;
+  font-family: Arial, sans-serif;
+  background: #0b1020;
+  color: #ffffff;
 }
 
-.app {
-  max-width: 600px;
-  margin: auto;
-  padding: 20px;
+.container {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 25px 16px 50px;
 }
 
-header {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 25px;
+.hero {
+  text-align: center;
+  padding: 30px 10px;
 }
 
-.shield {
-  font-size: 45px;
+.logo {
+  font-size: 55px;
 }
 
 h1 {
-  margin: 0;
-  font-size: 28px;
-}
-
-header p {
-  margin: 5px 0 0;
-  color: #9ca3af;
-}
-
-.card {
-  background: #151b23;
-  border: 1px solid #293241;
-  border-radius: 18px;
-  padding: 20px;
-  margin-bottom: 18px;
+  margin: 10px 0;
+  font-size: 36px;
 }
 
 h2 {
   margin-top: 0;
 }
 
-.description {
-  color: #aeb7c4;
+.hero p {
+  color: #b8c1d9;
   line-height: 1.5;
 }
 
-label {
-  display: block;
-  margin-top: 15px;
-  margin-bottom: 6px;
-  font-weight: bold;
+.privacy-badge {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 8px 14px;
+  border-radius: 20px;
+  background: #16213d;
+  color: #8ee6a8;
+  font-size: 14px;
+}
+
+.card {
+  background: #151d33;
+  border: 1px solid #283452;
+  border-radius: 16px;
+  padding: 22px;
+  margin-bottom: 18px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.description {
+  color: #b8c1d9;
 }
 
 input {
   width: 100%;
-  padding: 14px;
+  padding: 15px;
+  margin: 12px 0;
+  border: 1px solid #394766;
   border-radius: 10px;
-  border: 1px solid #3a4554;
-  background: #0d131b;
+  background: #0d1426;
   color: white;
   font-size: 16px;
 }
 
 button {
   width: 100%;
-  margin-top: 22px;
   padding: 15px;
-  border: none;
-  border-radius: 12px;
-  background: #2563eb;
+  border: 0;
+  border-radius: 10px;
+  background: #4f8cff;
   color: white;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: bold;
+  cursor: pointer;
 }
 
 button:active {
   transform: scale(0.98);
 }
 
-.status {
-  display: flex;
-  justify-content: space-between;
+.status-message {
+  text-align: center;
+  color: #9eabc8;
+  min-height: 20px;
+}
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.status-box {
+  background: #0d1426;
+  border-radius: 12px;
+  padding: 18px 8px;
   text-align: center;
 }
 
-.status div {
-  flex: 1;
-}
-
-.status strong {
+.status-box strong {
   display: block;
   font-size: 28px;
+  margin-bottom: 5px;
 }
 
-.status span {
-  color: #9ca3af;
+.status-box span {
+  color: #9eabc8;
   font-size: 13px;
 }
 
-.empty {
-  color: #8c97a5;
-}
-
-footer {
-  text-align: center;
-  color: #687382;
-  font-size: 13px;
-  padding: 20px;
+.results {
+  margin-top: 18px;
+  padding: 15px;
+  background: #0d1426;
+  border-radius: 12px;
+  color: #c7d0e6;
   line-height: 1.6;
+}
+
+.connection-status {
+  padding: 12px;
+  background: #0d1426;
+  border-radius: 10px;
+  color: #8ee6a8;
+}
+
+@media (max-width: 500px) {
+  h1 {
+    font-size: 30px;
+  }
+
+  .status-grid {
+    gap: 6px;
+  }
 }
