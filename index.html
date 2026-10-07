@@ -9,81 +9,82 @@
 
 <body>
 
-  <div class="app">
+  <main class="container">
 
-    <header>
-      <div class="shield">🛡️</div>
-      <div>
-        <h1>Privacy Scout</h1>
-        <p>Your personal information, under your control.</p>
+    <header class="hero">
+      <div class="logo">🛡️</div>
+      <h1>Privacy Scout</h1>
+      <p>Check your information and understand your privacy exposure.</p>
+
+      <div class="privacy-badge">
+        🔒 Local Scan Mode
       </div>
     </header>
 
-    <main>
+    <section class="card">
+      <h2>🔎 Scan Your Information</h2>
 
-      <section class="card">
-        <h2>🔎 Scan the Internet</h2>
+      <p class="description">
+        Enter a phone number to perform a local privacy check.
+      </p>
 
-        <p class="description">
-          Privacy Scout will search for your information
-          and help you remove it from the Internet.
-        </p>
+      <input
+        id="phone"
+        type="tel"
+        placeholder="Enter a phone number"
+        autocomplete="off"
+      >
 
-        <label for="name">Name</label>
-        <input id="name" type="text" placeholder="Enter your name">
+      <button id="scanButton">
+        🔎 Scan My Information
+      </button>
 
-        <label for="email">Email</label>
-        <input id="email" type="email" placeholder="Enter an email">
+      <p id="status" class="status-message">
+        Privacy Scout is ready.
+      </p>
+    </section>
 
-        <label for="phone">Phone</label>
-        <input id="phone" type="tel" placeholder="Enter a phone number">
+    <section class="card">
+      <h2>📊 Privacy Status</h2>
 
-        <button id="scanButton">
-          🔎 Scan My Information
-        </button>
+      <div class="status-grid">
 
-      </section>
-
-      <section class="card">
-        <h2>📊 Privacy Status</h2>
-
-        <div class="status">
-          <div>
-            <strong id="foundCount">0</strong>
-            <span>Found</span>
-          </div>
-
-          <div>
-            <strong id="removedCount">0</strong>
-            <span>Removed</span>
-          </div>
-
-          <div>
-            <strong id="waitingCount">0</strong>
-            <span>Waiting</span>
-          </div>
+        <div class="status-box">
+          <strong id="foundCount">0</strong>
+          <span>Found</span>
         </div>
-      </section>
 
-      <section class="card">
-        <h2>📋 Activity</h2>
-
-        <div id="activity">
-          <p class="empty">
-            No scans have been performed yet.
-          </p>
+        <div class="status-box">
+          <strong id="riskCount">0</strong>
+          <span>Risks</span>
         </div>
-      </section>
 
-    </main>
+        <div class="status-box">
+          <strong id="safeCount">0</strong>
+          <span>Safe</span>
+        </div>
 
-    <footer>
-      🔒 Privacy Scout
-      <br>
-      Your information stays on this device whenever possible.
-    </footer>
+      </div>
 
-  </div>
+      <div id="results" class="results">
+        <p>Run a scan to see your privacy results.</p>
+      </div>
+    </section>
+
+    <section class="card privacy-card">
+      <h2>🔐 Your Privacy</h2>
+
+      <p>
+        This version performs its scan directly in your browser.
+        Your information is not sent to an outside service.
+      </p>
+
+      <div class="connection-status">
+        🟢 No external connection required
+      </div>
+    </section>
+
+  </main>
 
   <script src="script.js"></script>
 
