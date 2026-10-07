@@ -60,6 +60,7 @@ h2 {
 
 .description {
   color: #b8c1d9;
+  line-height: 1.5;
 }
 
 input {
@@ -87,6 +88,11 @@ button {
 
 button:active {
   transform: scale(0.98);
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .status-message {
@@ -128,6 +134,63 @@ button:active {
   line-height: 1.6;
 }
 
+.cleanup-card {
+  border: 1px solid #34466d;
+}
+
+.cleanup-button {
+  background: #5c9f72;
+  margin-top: 8px;
+}
+
+.cleanup-results {
+  margin-top: 18px;
+  line-height: 1.6;
+}
+
+.cleanup-item {
+  background: #0d1426;
+  border: 1px solid #283452;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 12px;
+}
+
+.cleanup-item h3 {
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+
+.cleanup-item p {
+  color: #b8c1d9;
+  margin: 7px 0;
+}
+
+.cleanup-status {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  background: #16213d;
+  color: #ffd27a;
+  font-size: 13px;
+}
+
+.cleanup-complete {
+  background: #183b28;
+  color: #8ee6a8;
+}
+
+.privacy-warning {
+  margin: 15px 0;
+  padding: 14px;
+  border-radius: 10px;
+  background: #211d14;
+  border: 1px solid #594b2d;
+  color: #f0d99b;
+  line-height: 1.5;
+}
+
 .connection-status {
   padding: 12px;
   background: #0d1426;
@@ -136,6 +199,7 @@ button:active {
 }
 
 @media (max-width: 500px) {
+
   h1 {
     font-size: 30px;
   }
@@ -143,4 +207,5 @@ button:active {
   .status-grid {
     gap: 6px;
   }
+
 }
