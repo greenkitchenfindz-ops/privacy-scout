@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Privacy Scout</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <div class="app">
+
+    <header>
+      <div class="shield">🛡️</div>
+      <div>
+        <h1>Privacy Scout</h1>
+        <p>Your personal information, under your control.</p>
+      </div>
+    </header>
+
+    <main>
+
+      <section class="card">
+        <h2>🔎 Scan the Internet</h2>
+
+        <p class="description">
+          Privacy Scout will search for your information
+          and help you remove it from the Internet.
+        </p>
+
+        <label for="name">Name</label>
+        <input id="name" type="text" placeholder="Enter your name">
+
+        <label for="email">Email</label>
+        <input id="email" type="email" placeholder="Enter an email">
+
+        <label for="phone">Phone</label>
+        <input id="phone" type="tel" placeholder="Enter a phone number">
+
+        <button id="scanButton">
+          🔎 Scan My Information
+        </button>
+
+      </section>
+
+      <section class="card">
+        <h2>📊 Privacy Status</h2>
+
+        <div class="status">
+          <div>
+            <strong id="foundCount">0</strong>
+            <span>Found</span>
+          </div>
+
+          <div>
+            <strong id="removedCount">0</strong>
+            <span>Removed</span>
+          </div>
+
+          <div>
+            <strong id="waitingCount">0</strong>
+            <span>Waiting</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2>📋 Activity</h2>
+
+        <div id="activity">
+          <p class="empty">
+            No scans have been performed yet.
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      🔒 Privacy Scout
+      <br>
+      Your information stays on this device whenever possible.
+    </footer>
+
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
