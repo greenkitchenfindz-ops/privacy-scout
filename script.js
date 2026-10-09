@@ -1,5 +1,5 @@
-document.addEventListener("DOMContentLoaded", () => {
 
+document.addEventListener("DOMContentLoaded", () => {
   const API_URL =
     "https://privacy-scout-api.greenkitchenfindz.workers.dev";
 
@@ -19,346 +19,262 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("cleanupResults");
   const backendStatus =
     document.getElementById("backendStatus");
-
   const approvalData =
     document.getElementById("approvalData");
-
   const approvalStatus =
     document.getElementById("approvalStatus");
-
   const exposureResults =
     document.getElementById("exposureResults");
 
-
   let lastScannedPhone = "";
+  let searchInProgress = false;
 
+  function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => ({
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;"
+    })[char]);
+  }
 
-  // -----------------------------
-  // LOCAL PHONE SCAN
-  // -----------------------------
+  function validPhone(phone) {
+    const digits = phone.replace(/\D/g, "");
+    return digits.length >= 7 && digits.length <= 15;
+  }
+
+  function resetExposure() {
+    approvalStatus.textContent =
+      "🔒 Waiting for your approval.";
+
+    approveSearchButton.disabled = false;
+    approveSearchButton.textContent =
+      "🔐 Approve Online Search";
+
+    exposureResults.innerHTML =
+      "<p>No online search has been performed.</p>";
+  }
 
   scanButton.addEventListener("click", () => {
-
     const phone = phoneInput.value.trim();
 
-    if (!phone) {
-      status.textContent =
-        "Please enter a phone number first.";
-      return;
-    }
-
-    const digits = phone.replace(/\D/g, "");
-
-    if (digits.length < 7) {
+    if (!phone || !validPhone(phone)) {
       status.textContent =
         "Please enter a valid phone number.";
       return;
     }
 
+    lastScannedPhone = phone;
     status.textContent =
       "🔎 Running local privacy scan...";
 
     scanButton.disabled = true;
+    approveSearchButton.disabled = true;
 
     setTimeout(() => {
-
-      lastScannedPhone = phone;
-
       foundCount.textContent = "1";
       riskCount.textContent = "0";
       safeCount.textContent = "1";
 
       results.innerHTML = `
-        <strong>🛡️ Scan Complete</strong>
-
-        <p>
-          Privacy Scout processed the information locally.
-        </p>
-
-        <p>
-          No external lookup was performed.
-        </p>
-
-        <p>
-          <strong>Information entered:</strong>
-          Phone number
-        </p>
-
-        <p>
-          <strong>External data sent:</strong>
-          None
-        </p>
+        <strong>🛡️ Local Scan Complete</strong>
+        <p>Your entry was processed in this browser.</p>
+        <p>No external lookup was performed.</p>
+        <p><strong>External data sent:</strong> None</p>
       `;
 
       approvalData.textContent =
-        "Phone number entered";
+        "Phone number (sent only after approval)";
 
-      approvalStatus.textContent =
-        "🔒 Waiting for your approval.";
-
-      exposureResults.innerHTML = `
-        <p>
-          No online search has been performed.
-        </p>
-      `;
-
-      approveSearchButton.disabled = false;
-
-      approveSearchButton.textContent =
-        "🔐 Approve Online Search";
-
-      status.textContent =
-        "✅ Scan complete.";
-
+      resetExposure();
+      status.textContent = "✅ Local scan complete.";
       scanButton.disabled = false;
-
-    }, 800);
+    }, 400);
   });
 
-
-  // -----------------------------
-  // EXPOSURE FINDER APPROVAL
-  // -----------------------------
-
-  approveSearchButton.addEventListener("click", () => {
-
+  approveSearchButton.addEventListener("click", async () => {
     if (!lastScannedPhone) {
-
       approvalStatus.textContent =
-        "⚠️ Run a phone scan before approving an online search.";
-
+        "⚠️ Run a phone scan before searching.";
       return;
     }
 
+    if (searchInProgress) return;
 
-    // IMPORTANT:
-    // Nothing is sent to the internet here.
-    // This is ONLY the permission demonstration.
+    const confirmed = window.confirm(
+      "PRIVACY SCOUT — ONLINE SEARCH\n\n" +
+      "If you continue:\n\n" +
+      "1. Your phone number will be sent to the Privacy Scout " +
+      "Cloudflare backend.\n\n" +
+      "2. The backend will send your number to Tavily to search " +
+      "public web results.\n\n" +
+      "3. Search-result snippets will be sent to Cloudflare AI " +
+      "for an explanation.\n\n" +
+      "4. Search providers may process or retain requests under " +
+      "their own policies.\n\n" +
+      "Results may be unrelated or inaccurate. No removal " +
+      "requests will be submitted.\n\n" +
+      "Continue and send this phone number for the search?"
+    );
 
+    if (!confirmed) {
+      approvalStatus.textContent =
+        "🔒 Search cancelled. No phone number was sent.";
+      return;
+    }
+
+    searchInProgress = true;
     approveSearchButton.disabled = true;
-
-    approveSearchButton.textContent =
-      "✅ Online Search Approved";
-
-
+    approveSearchButton.textContent = "🔎 Searching...";
     approvalStatus.textContent =
-      "🟢 Permission granted. No search has been performed yet.";
+      "☁️ Sending your approved search request...";
 
-
-    exposureResults.innerHTML = `
-
-      <div class="cleanup-item">
-
-        <h3>🟢 Permission Granted</h3>
-
-        <p>
-          You approved Privacy Scout to perform an online
-          exposure search.
-        </p>
-
-        <p>
-          <strong>No personal information was sent.</strong>
-        </p>
-
-        <span class="cleanup-status">
-          🟡 Search service not connected
-        </span>
-
-      </div>
-
-      <div class="cleanup-item">
-
-        <h3>🔐 Your Information</h3>
-
-        <p>
-          The phone number remains inside this browser.
-        </p>
-
-        <p>
-          The next step will connect this approval to the
-          Privacy Scout backend.
-        </p>
-
-        <span class="cleanup-status">
-          🔒 Waiting for search integration
-        </span>
-
-      </div>
-
-    `;
-  });
-
-
-  // -----------------------------
-  // CLEANUP PLAN
-  // -----------------------------
-
-  cleanupButton.addEventListener("click", () => {
-
-    if (!lastScannedPhone) {
-
-      cleanupResults.innerHTML = `
-        <div class="cleanup-item">
-
-          <h3>📱 Scan Required</h3>
-
-          <p>
-            Enter a phone number and run the Privacy Scout
-            scan first.
-          </p>
-
-        </div>
-      `;
-
-      return;
-    }
-
-
-    cleanupButton.disabled = true;
-
-    cleanupButton.textContent =
-      "🧹 Building Cleanup Plan...";
-
-
-    setTimeout(() => {
-
-      cleanupResults.innerHTML = `
-
-        <div class="cleanup-item">
-
-          <h3>📱 Phone Number Exposure</h3>
-
-          <p>
-            Your phone number is the information you asked
-            Privacy Scout to protect.
-          </p>
-
-          <span class="cleanup-status">
-            🟡 Online check not performed
-          </span>
-
-        </div>
-
-
-        <div class="cleanup-item">
-
-          <h3>🌐 Data Broker Listings</h3>
-
-          <p>
-            Some people-search and data-broker websites may
-            publish phone numbers.
-          </p>
-
-          <span class="cleanup-status">
-            🟡 Online check not performed
-          </span>
-
-        </div>
-
-
-        <div class="cleanup-item">
-
-          <h3>🔎 Search Results</h3>
-
-          <p>
-            Public websites, directories, or old posts could
-            potentially expose your information.
-          </p>
-
-          <span class="cleanup-status">
-            🟡 Online check not performed
-          </span>
-
-        </div>
-
-
-        <div class="cleanup-item">
-
-          <h3>🧹 Removal Requests</h3>
-
-          <p>
-            Removal requests will only be prepared or
-            submitted after you approve them.
-          </p>
-
-          <span class="cleanup-status">
-            🔒 Waiting for approval
-          </span>
-
-        </div>
-
-      `;
-
-
-      cleanupButton.textContent =
-        "🧹 Cleanup Plan Created";
-
-      cleanupButton.disabled = false;
-
-    }, 700);
-  });
-
-
-  // -----------------------------
-  // BACKEND TEST
-  // -----------------------------
-
-  backendButton.addEventListener("click", async () => {
-
-    backendButton.disabled = true;
-
-    backendStatus.textContent =
-      "🔄 Connecting to Privacy Scout backend...";
-
+    exposureResults.innerHTML =
+      "<p>Searching public web results. Please wait...</p>";
 
     try {
-
       const response = await fetch(
-        API_URL + "/test",
+        API_URL + "/exposure-search",
         {
           method: "POST",
-
           headers: {
             "Content-Type": "application/json"
           },
-
           body: JSON.stringify({
-            test: true
+            phone: lastScannedPhone
           })
         }
       );
 
+      const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error("Backend error");
+      if (!response.ok || !data.success) {
+        throw new Error(
+          data.error || "The search could not be completed."
+        );
       }
 
+      const resultCards = (data.results || []).map(item => `
+        <div class="cleanup-item">
+          <h3>${escapeHTML(item.title || "Untitled result")}</h3>
+          <p>${escapeHTML(item.content || "No preview available.")}</p>
+          ${
+            /^https?:\/\//i.test(item.url || "")
+              ? `<p><a href="${escapeHTML(item.url)}"
+                   target="_blank" rel="noopener noreferrer">
+                   Open original webpage
+                 </a></p>`
+              : ""
+          }
+          <span class="cleanup-status">
+            ⚠️ Possible match — not verified
+          </span>
+        </div>
+      `).join("");
+
+      exposureResults.innerHTML = `
+        <div class="cleanup-item">
+          <h3>🔎 Search Complete</h3>
+          <p>
+            Results are possible matches, not proof that a
+            webpage refers to you.
+          </p>
+          <p><strong>Results returned:</strong>
+            ${(data.results || []).length}
+          </p>
+        </div>
+        ${
+          resultCards ||
+          "<p>No matching results were returned. This does not prove your number is absent from the internet.</p>"
+        }
+        <div class="cleanup-item">
+          <h3>🤖 Cloudflare AI Explanation</h3>
+          <p>${escapeHTML(
+            data.explanation ||
+            "No AI explanation was returned."
+          )}</p>
+        </div>
+      `;
+
+      approvalStatus.textContent =
+        "✅ Search completed. Your number was sent to the services described above.";
+
+      approveSearchButton.textContent =
+        "✅ Search Complete";
+    } catch (error) {
+      approvalStatus.textContent =
+        "⚠️ Search failed. Check your connection and try again.";
+
+      exposureResults.innerHTML = `
+        <div class="cleanup-item">
+          <h3>Search Could Not Complete</h3>
+          <p>${escapeHTML(error.message)}</p>
+          <p>No removal requests were submitted.</p>
+        </div>
+      `;
+
+      approveSearchButton.disabled = false;
+      approveSearchButton.textContent =
+        "🔐 Retry Online Search";
+    } finally {
+      searchInProgress = false;
+    }
+  });
+
+  cleanupButton.addEventListener("click", () => {
+    if (!lastScannedPhone) {
+      cleanupResults.innerHTML = `
+        <div class="cleanup-item">
+          <h3>📱 Scan Required</h3>
+          <p>Enter a phone number and run the local scan first.</p>
+        </div>
+      `;
+      return;
+    }
+
+    cleanupResults.innerHTML = `
+      <div class="cleanup-item">
+        <h3>📱 Phone Number Exposure</h3>
+        <p>Use the Exposure Finder to look for possible public listings.</p>
+        <span class="cleanup-status">Check results before acting</span>
+      </div>
+      <div class="cleanup-item">
+        <h3>🧹 Removal Requests</h3>
+        <p>Review each website's official removal process.</p>
+        <p>No removal request will be sent automatically.</p>
+        <span class="cleanup-status">🔒 Manual approval required</span>
+      </div>
+    `;
+  });
+
+  backendButton.addEventListener("click", async () => {
+    backendButton.disabled = true;
+    backendStatus.textContent =
+      "🔄 Connecting to Privacy Scout backend...";
+
+    try {
+      const response = await fetch(API_URL + "/test", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ test: true })
+      });
 
       const data = await response.json();
 
-
-      if (data.success) {
-
-        backendStatus.textContent =
-          "🟢 Backend connected successfully. No personal information was sent.";
-
-      } else {
-
-        backendStatus.textContent =
-          "⚠️ Backend responded, but the test was not successful.";
-
+      if (!response.ok || !data.success) {
+        throw new Error("Backend test failed.");
       }
 
-    } catch (error) {
-
       backendStatus.textContent =
-        "🔴 Could not connect to the backend. Check the Worker and try again.";
-
+        "🟢 Backend connected. No personal information was sent.";
+    } catch {
+      backendStatus.textContent =
+        "🔴 Could not connect to the backend. Check the Worker.";
+    } finally {
+      backendButton.disabled = false;
     }
-
-
-    backendButton.disabled = false;
-
   });
-
 });
